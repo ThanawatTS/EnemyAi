@@ -6,28 +6,28 @@ public class Bullet : MonoBehaviour {
 
     public float speed;
 
+    Rigidbody2D rb2d;
     private Transform player;
-    private Vector2 target;
     private Vector3 dir;
+    
+    
 	// Use this for initialization
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        target = new Vector2(player.position.x, player.position.y);
-	}
+        rb2d = GetComponent<Rigidbody2D>();
+        dir = Vector3.Normalize(player.position - this.transform.position);
+       
+    }
 	
 	// Update is called once per frame
-	void Update () {
-        StraightBullet();
-	}
+	void FixedUpdate () {
+        StraightBullet(dir);
+    }
 
-    void StraightBullet()
+    void StraightBullet(Vector3 dir)
     {
-        Vector2 minCam = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
-        Vector2 maxCam = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
-
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
         
-       
+        rb2d.velocity = dir*speed;
     }
     void OnBecameInvisible()
     {

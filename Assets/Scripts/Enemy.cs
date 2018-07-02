@@ -56,6 +56,7 @@ public class Enemy : MonoBehaviour {
             else
             {
                 Instantiate(bulletFollow, transform.position, Quaternion.identity);
+                
             }
             reloadShot = startShot;
         }

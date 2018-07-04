@@ -29,23 +29,21 @@ public class BacktoBackBullet : MonoBehaviour {
         if(secondMove && (transform.position != target))
         {
             transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-            Debug.Log("now" + transform.position);
-            Debug.Log("targettttttttttttttt" + target);
-            Debug.Log("check1111111111111111111111111111111111" + secondMove);
+            
         }
         
         
         else if((transform.position == target) && secondMove)
         {
-            Debug.Log("check2" + secondMove);
+            
             Dir = Vector3.Normalize(player.position - this.transform.position) * speed * Time.deltaTime;
-            Debug.Log("2222222222222222222222");
+            
             StepTwo();
         }
 
         else if (lastMove)
         {
-            Debug.Log("333333333333333333333333");
+            
             transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
             rb2d.velocity = new Vector2(Dir.x, Dir.y);
         }

@@ -18,14 +18,9 @@ public class BossFigure8 : MonoBehaviour {
     private float rangeOfProjectile;
     private float speedbullet;
 
-    //Movement
-    public float horSpeed;
-    public float verSpeed;
-    public float range;
-    private Vector2 CurPosition;
-    private int numRound;
-    private bool check;
-    private bool rotateMove;
+    
+
+    
 
 
 
@@ -43,118 +38,21 @@ public class BossFigure8 : MonoBehaviour {
         center = transform.position;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         //StartCoroutine(FollowDestination());
-        CurPosition = transform.position;
         
-        horSpeed = 4;
-        verSpeed = 3;
-        range = 3;
-        numRound = 0;
-        check = true;
-        rotateMove = true;
+
+        
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
         //teta += speedFlying;
 
-        Controll();
+        
 
         EnemyShot();
 	}
 
-    void Controll()
-    {
-        Debug.Log(rotateMove);
-        if (rotateMove)
-        {
-            Debug.Log("1");
-            Move();
-        }
-        else if (!rotateMove)
-        {
-            Debug.Log("2");
-            MoveOp();
-        }
-    }
-
-    void Move()
-    {
-        if(CurPosition.y <= 0)
-        {  
-            if (!check)
-            {
-                Debug.Log("1");
-                numRound++;
-                check = true;
-            }
-            if(numRound % 4 == 2)
-            {
-                CurPosition.x -= horSpeed * Time.deltaTime;
-            }
-            else if(numRound % 4 == 0)
-            {
-                CurPosition.x += horSpeed * Time.deltaTime;
-            }
-        }
-        else if (CurPosition.y > 0 )
-        {
-            if (check)
-            {
-                Debug.Log("2");
-                numRound++;
-                check = false;
-            }
-            if (numRound % 4 == 1)
-            {
-                CurPosition.x += horSpeed * Time.deltaTime;
-            }
-            else if (numRound % 4 == 3)
-            {
-                CurPosition.x -= horSpeed * Time.deltaTime;
-            }
-        }
-        CurPosition.y = Mathf.Sin(Time.realtimeSinceStartup * verSpeed) * range;
-        transform.position = CurPosition;
-    }
-    void MoveOp()
-    {
-        if (CurPosition.y <= 0)
-        {
-            if (!check)
-            {
-                Debug.Log("1");
-                numRound++;
-                check = true;
-            }
-            if (numRound % 4 == 2)
-            {
-                CurPosition.x += horSpeed * Time.deltaTime;
-            }
-            else if (numRound % 4 == 0)
-            {
-                CurPosition.x -= horSpeed * Time.deltaTime;
-            }
-        }
-        else if (CurPosition.y > 0)
-        {
-            if (check)
-            {
-                Debug.Log("2");
-                numRound++;
-                check = false;
-            }
-            if (numRound % 4 == 1)
-            {
-                CurPosition.x -= horSpeed * Time.deltaTime;
-            }
-            else if (numRound % 4 == 3)
-            {
-                CurPosition.x += horSpeed * Time.deltaTime;
-            }
-        }
-        CurPosition.y = Mathf.Sin(Time.realtimeSinceStartup * verSpeed) * range;
-        transform.position = CurPosition;
-    }
+   
 
     void Movement(float _teta)
     {

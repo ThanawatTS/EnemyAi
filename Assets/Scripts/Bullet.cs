@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour {
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("hit");
+            
             DestroyObject();
         }    
     }

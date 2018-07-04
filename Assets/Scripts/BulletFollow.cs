@@ -36,7 +36,7 @@ public class BulletFollow : MonoBehaviour {
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("hit");
+            
             DestroyObject();
         }
     }

@@ -18,13 +18,22 @@ public class BossFigure8 : MonoBehaviour {
     private float rangeOfProjectile;
     private float speedbullet;
 
-    
+    //Movement
+    public float horSpeed;
+    public float verSpeed;
+    public float range;
+    private Vector2 CurPosition;
+    private int numRound;
+    private bool check;
+    private bool rotateMove;
 
 
 
     public GameObject bullet3Pro;
     public GameObject bullet;
     public GameObject bulletFollow;
+    public GameObject bulletBacktoBack;
+    //public Transform[] destination;
     private Vector2 offset;
     private Vector2 center;
     private Vector2 dir;
@@ -33,22 +42,150 @@ public class BossFigure8 : MonoBehaviour {
 	void Start () {
         center = transform.position;
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        //StartCoroutine(FollowDestination());
+        CurPosition = transform.position;
         
+        horSpeed = 4;
+        verSpeed = 3;
+        range = 3;
+        numRound = 0;
+        check = true;
+        rotateMove = true;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        teta += speedFlying * Time.deltaTime;
-        Movement(teta);
-       
+	void FixedUpdate () {
+        //teta += speedFlying;
+
+        Controll();
+
         EnemyShot();
 	}
+
+    void Controll()
+    {
+        Debug.Log(rotateMove);
+        if (rotateMove)
+        {
+            Debug.Log("1");
+            Move();
+        }
+        else if (!rotateMove)
+        {
+            Debug.Log("2");
+            MoveOp();
+        }
+    }
+
+    void Move()
+    {
+        if(CurPosition.y <= 0)
+        {  
+            if (!check)
+            {
+                Debug.Log("1");
+                numRound++;
+                check = true;
+            }
+            if(numRound % 4 == 2)
+            {
+                CurPosition.x -= horSpeed * Time.deltaTime;
+            }
+            else if(numRound % 4 == 0)
+            {
+                CurPosition.x += horSpeed * Time.deltaTime;
+            }
+        }
+        else if (CurPosition.y > 0 )
+        {
+            if (check)
+            {
+                Debug.Log("2");
+                numRound++;
+                check = false;
+            }
+            if (numRound % 4 == 1)
+            {
+                CurPosition.x += horSpeed * Time.deltaTime;
+            }
+            else if (numRound % 4 == 3)
+            {
+                CurPosition.x -= horSpeed * Time.deltaTime;
+            }
+        }
+        CurPosition.y = Mathf.Sin(Time.realtimeSinceStartup * verSpeed) * range;
+        transform.position = CurPosition;
+    }
+    void MoveOp()
+    {
+        if (CurPosition.y <= 0)
+        {
+            if (!check)
+            {
+                Debug.Log("1");
+                numRound++;
+                check = true;
+            }
+            if (numRound % 4 == 2)
+            {
+                CurPosition.x += horSpeed * Time.deltaTime;
+            }
+            else if (numRound % 4 == 0)
+            {
+                CurPosition.x -= horSpeed * Time.deltaTime;
+            }
+        }
+        else if (CurPosition.y > 0)
+        {
+            if (check)
+            {
+                Debug.Log("2");
+                numRound++;
+                check = false;
+            }
+            if (numRound % 4 == 1)
+            {
+                CurPosition.x -= horSpeed * Time.deltaTime;
+            }
+            else if (numRound % 4 == 3)
+            {
+                CurPosition.x += horSpeed * Time.deltaTime;
+            }
+        }
+        CurPosition.y = Mathf.Sin(Time.realtimeSinceStartup * verSpeed) * range;
+        transform.position = CurPosition;
+    }
 
     void Movement(float _teta)
     {
         offset = new Vector2(radius*(speedFlying * Mathf.Sqrt(2) * Mathf.Cos(_teta)) / (0.5f * (1 - Mathf.Cos(2 * _teta)) + 1), (speedFlying * Mathf.Sqrt(2) * Mathf.Cos(_teta) * Mathf.Sin(_teta)) / (0.5f * (1 - Mathf.Cos(2 * _teta)) + 1));
-        transform.position = center + offset;
+        transform.position = center  + offset;
+        
     }
+    //Coroutine
+    /*IEnumerator FollowDestination()
+    {
+        while (true)
+        {
+            foreach (Transform path in destination)
+            {
+                
+                yield return StartCoroutine(MoveCo(path.position, 5f));
+            }
+        }
+        
+    }
+    IEnumerator MoveCo(Vector3 des, float speed)
+    {
+        while(transform.position != des)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, des, speed * Time.deltaTime);
+            
+           
+            yield return null;
+        }
+    }*/
+    
     
     //3Projectile----
     void FireThreeProjectile()
@@ -98,23 +235,33 @@ public class BossFigure8 : MonoBehaviour {
         if (reloadShot <= 0)
         {
             //no rotate
-            var number = Random.Range(0, 4);
+            var number = Random.Range(0, 5);
 
             if (number == 0)
             {
+                
                 Instantiate(bullet, transform.position, Quaternion.identity);
             }
             else if (number == 1)
             {
+               
                 Instantiate(bulletFollow, transform.position, Quaternion.identity);
             }
             else if (number == 2)
             {
+               
                 FireThreeProjectile();
+                
             }
             else if (number == 3)
             {
+               
                 FireEightProjectile();
+                
+            }
+            else if (number == 4)
+            {
+                Instantiate(bulletBacktoBack, transform.position, Quaternion.identity);
             }
 
             reloadShot = startShot;
